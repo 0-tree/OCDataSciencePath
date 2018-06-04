@@ -9,6 +9,9 @@ Created on Thu May 24 15:10:27 2018
 OC-DataScience-Project3
 
 
+tuto ML/API:
+    https://www.analyticsvidhya.com/blog/2017/09/machine-learning-models-as-apis-using-flask/
+
 
 """
 
