@@ -35,7 +35,7 @@ from sklearn.neighbors import NearestNeighbors
 from sklearn.externals import joblib
 
 
-#%% load data
+#%% path to data
 
 if HOST == 'Arthurs-MacBook-Pro.local':
     pathToData = HOME+'xxx'                                        # @home
@@ -44,10 +44,11 @@ elif HOST == 'Sirius.local':
 else:
     raise ValueError('unknown host: {}'.format(HOST))
     
+
+
+#%% data
+    
 df = pd.read_csv(pathToData)
-
-
-#%% data (handy)
 
 X = df.iloc[:,4:].values
 print((X.sum(axis=1) != 3).sum())
@@ -69,7 +70,7 @@ model = NearestNeighbors(n_neighbors=nbReco,
 
 #%% example of recommendation call
 
-#model = joblib.load('model.pkl') # use this to test model persistence
+#model = joblib.load('./Model/model.pkl') # use this to test model persistence
 
 
 i0 = np.random.randint(n,size=1)[0]
@@ -90,6 +91,6 @@ for k,i in enumerate(i_nn):
 
 #%% dump model for API usage
         
-joblib.dump(model,'model.pkl') 
+joblib.dump(model,'./Model/model.pkl') 
 
 
