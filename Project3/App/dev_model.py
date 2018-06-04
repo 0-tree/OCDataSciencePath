@@ -22,9 +22,9 @@ import os
 HOME = os.path.expanduser('~/')
 HOST = os.uname()[1]
 if HOST == 'Arthurs-MacBook-Pro.local':
-    os.chdir(HOME+'/Documents/GitHub/OCDataSciencePath/Project3/')    # @home
+    os.chdir(HOME+'/Documents/GitHub/OCDataSciencePath/Project3/App')    # @home
 elif HOST == 'Sirius.local':
-    os.chdir(HOME+'Perso/GitHub/OCDataSciencePath/Project3/')         # @L2
+    os.chdir(HOME+'Perso/GitHub/OCDataSciencePath/Project3/App')         # @L2
 else:
     raise ValueError('unknown host: {}'.format(HOST))
     
@@ -32,7 +32,7 @@ import numpy as np
 import pandas as pd
 
 from sklearn.neighbors import NearestNeighbors
-
+from sklearn.externals import joblib
 
 
 #%% load data
@@ -59,7 +59,7 @@ n,p = X.shape
 
 
 
-#%% exampel of model (k-nn)
+#%% example of model (k-nn)
 
 nbReco = 5+1 # +1 because the calling film will always be at distance 0
 model = NearestNeighbors(n_neighbors=nbReco,
@@ -68,6 +68,9 @@ model = NearestNeighbors(n_neighbors=nbReco,
 
 
 #%% example of recommendation call
+
+#model = joblib.load('model.pkl') # use this to test model persistence
+
 
 i0 = np.random.randint(n,size=1)[0]
 
@@ -85,6 +88,8 @@ for k,i in enumerate(i_nn):
         print('{} (d={}) (a: {})'.format(N[i],np.round(d_nn[k],1),A[i,:]))
 
 
-
+#%% dump model for API usage
+        
+joblib.dump(model,'model.pkl') 
 
 
