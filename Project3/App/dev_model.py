@@ -34,6 +34,8 @@ import pandas as pd
 from sklearn.neighbors import NearestNeighbors
 from sklearn.externals import joblib
 
+from utilities import Loader
+
 
 #%% path to data
 
@@ -44,20 +46,11 @@ elif HOST == 'Sirius.local':
 else:
     raise ValueError('unknown host: {}'.format(HOST))
     
-
-
+    
 #%% data
     
-df = pd.read_csv(pathToData)
-
-X = df.iloc[:,4:].values
-print((X.sum(axis=1) != 3).sum())
-
-N = df['movie_title'].values
-A = df[['actor_1_name','actor_2_name','actor_3_name']].values
-
-n,p = X.shape
-
+loader = Loader(pathToData)
+loader.load()
 
 
 #%% example of model (k-nn)
