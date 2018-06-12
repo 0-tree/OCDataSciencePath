@@ -44,7 +44,8 @@ if HOST == 'Arthurs-MacBook-Pro.local':
 elif HOST == 'Sirius.local':
     pathToData = HOME+'Downloads/movie_metadata_CLEAN.csv'         # @L2
 else:
-    raise ValueError('unknown host: {}'.format(HOST))
+    pathToData = './Data/movie_metadata_CLEAN.csv'                 # online
+#    raise ValueError('unknown host: {}'.format(HOST))
   
     
     
