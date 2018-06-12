@@ -28,15 +28,14 @@ else:
     raise ValueError('unknown host: {}'.format(HOST))
     
     
-import pandas as pd
 from flask import Flask, jsonify, make_response
 
 from sklearn.externals import joblib
 
+from utilities import DataHelper
+
 
 #%% config
-
-entryPoint = 'http://[hostname]/P3/API/v0/filmID/(arg)'
 
 
 # -> see if we can avoid loading the data...
@@ -64,28 +63,48 @@ def apiCall(filmID):
     else:
         filmID = int(filmID)
 
+        # load the data and retrieve data point
+        d = DataHelper(pathToData)
+        d.load()
+        
+        if filmID not in d.df.index:
+            return jsonify({'error': 'filmID not found in cleaned data'})
+        else:
+            i0 = d.index2integer(filmID,d.df) # IAH: return JSON if error here
+            X0 = d.X[i0,:].reshape(1,-1)        
+
         # load the model
         model = joblib.load('./Model/model.pkl')
         
-        # load the data -> see if we can avoid that...
-        df = pd.read_csv(pathToData)       
-        X = df.iloc[:,4:].values       
-        N = df['movie_title'].values
-        A = df[['actor_1_name','actor_2_name','actor_3_name']].values
-
         # make recommendation
-        X0 = X[filmID,:].reshape(1,-1)        
         d_nn,i_nn = model.kneighbors(X0)
         d_nn = d_nn[0,:]
         i_nn = i_nn[0,:]
         
+        idx_nn = d.integer2index(i_nn,d.df)
+        
+        # build output
         res = {}
-        res['call'] = {'id':filmID,'name':N[filmID],'actors':list(A[filmID,:])}
+        res['call'] = {'id':filmID,
+                       'name':d.movieName[filmID],
+                       'actors':list(d.actorName.loc[filmID,:].values),
+                       'duration':d.df.loc[filmID,'duration']} # avoid using X[i0,:] so we can check it's ok
         res['result'] = []
-        for i in i_nn[1:]: # 0th is the film itself
-            res['result'].append({'id':int(i),'name':N[i],'actors':list(A[i,:])}) # ???: need int(i) otherwise int64 is not JSONisable
+        for idx in idx_nn:
+            if (idx != filmID) & (len(res['result'])<(model.n_neighbors-1)): # quick hack to walkaround the potential instabilities in model's output
+                res['result'].append({'id':int(idx), # ???: need int(i) otherwise int64 is not JSONisable
+                                      'name':d.movieName[idx],
+                                      'actors':list(d.actorName.loc[idx,:]),
+                                      'duration':d.df.loc[idx,'duration']}) 
         
     return make_response(jsonify(res),200)
+
+
+
+@app.errorhandler(404)
+def notFound(error):
+    return make_response(jsonify({'error': 'url not found'}),404)
+
 
 
 
@@ -114,11 +133,7 @@ def apiCall(filmID):
 #        res = jsonify({'twice': _twice})
 #    
 #    return res
-#
-#
-#@app.errorhandler(404)
-#def notFound(error):
-#    return make_response(jsonify({'error': 'Not found'}),404)
+
 
 
 
