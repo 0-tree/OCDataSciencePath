@@ -8,7 +8,43 @@
   
    <body>
     <!-- comment -->
-    Body text
+          
+    <p>
+      Welcome to the flight delay predictor - V1. <br />
+      Fill in the following form to get your prediction:
+    </p>      
+          
+          
+    <form method="post" action="predictor.py">
+    
+    <fieldset>
+       <legend>Your flight</legend> <!-- Titre du fieldset --> 
+
+       <label for="date">Date of your flight:</label>
+       <input type="date" name="date" id="date" required/>
+       
+       <p>
+       <label for="airline">Your airline:</label><br />
+       <select name="airline" id="airline">
+           <option value="0">Select an airline</option>
+           <option value="AF">Air France</option>
+           <option value="AA">American Airlines</option>
+           <option value="QA">Qatar Airways</option>
+       </select>
+       </p>
+       
+       
+       <label for="depCity">Your departure city:</label>
+       <input type="text" name="depCity" id="depCity" required/>
+       
+       <br />
+       <br />
+       <input type="submit" value="Predict" />
+
+   </fieldset>
+   </form>
+    
+    
   </body>
   
 </html>
