@@ -16,11 +16,12 @@ def index():
 
 
 # use form with Flask: https://stackoverflow.com/questions/11556958/sending-data-from-html-form-to-a-python-script-in-flask
-@app.route('/handle_data', methods=['POST'])
-def handle_data():
+@app.route('/result', methods=['POST'])
+def result():
     date = request.form['date']
     airline = request.form['airline']
     depCity = request.form['depCity']
 
     dummyProcessing = ' @ '.join([date,airline,depCity])
-    return dummyProcessing
+
+    return render_template('result.html',prediction=dummyProcessing)
