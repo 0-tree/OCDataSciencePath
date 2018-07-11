@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for
+from flask import Flask, render_template, url_for, request
 
 app = Flask(__name__)
 
@@ -13,3 +13,14 @@ app.config.from_object('config')
 @app.route('/index/')
 def index():
     return render_template('index.html')
+
+
+# use form with Flask: https://stackoverflow.com/questions/11556958/sending-data-from-html-form-to-a-python-script-in-flask
+@app.route('/handle_data', methods=['POST'])
+def handle_data():
+    date = request.form['date']
+    airline = request.form['airline']
+    depCity = request.form['depCity']
+
+    dummyProcessing = ' @ '.join([date,airline,depCity])
+    return dummyProcessing
