@@ -1,4 +1,5 @@
 from flask import Flask, render_template, url_for, request
+from .intelligence.models import dummyPrediction
 
 app = Flask(__name__)
 
@@ -22,6 +23,5 @@ def result():
     airline = request.form['airline']
     depCity = request.form['depCity']
 
-    dummyProcessing = ' @ '.join([date,airline,depCity])
-
-    return render_template('result.html',prediction=dummyProcessing)
+    prediction = dummyPrediction(date,airline,depCity)
+    return render_template('result.html',prediction= prediction)
