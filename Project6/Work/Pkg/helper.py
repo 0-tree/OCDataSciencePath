@@ -88,6 +88,45 @@ def basicTagTextCleaner(tagText,outputType='str'):
     return text
 
 
+#%%
+    
+def isValidData(x,y,V_body):
+    '''
+    checks whether observations meet none of the following conditions
+    - no word is present amongst the body features
+    - no word is present amongst the title features
+    - no tag is present amongst the tag features.
+    
+    Inputs
+    ------
+    x : np.array
+        features data, with body features then title features.
+    y : np.array
+        multi-one-hot encoded target tags.
+    V_body : int
+        number of features for the body, used to derive the position of the features in x.
+        
+    Returns
+    -------
+    isValid : list of bool
+        True if the observation is valid. Same length as x.shape[0]
+        
+    Note
+    ----
+    Current implementation heavily relies on x being of the form
+    x = body features | title features.
+    '''
+    
+    if x.shape[0] != y.shape[0]:
+        raise ValueError('x and y have different nb of rows: {}'.format(x.shape[0],y.shape[0]))
+    
+    isValidBody = x[:,:V_body].max(axis=1) > 0
+    isValidTitle = x[:,V_body:].max(axis=1) > 0
+    isValidTag = y.max(axis=1) > 0
+    
+    isValid = list(isValidBody & isValidTitle & isValidTag)
+    return isValid
+
 
 #%% END
 
