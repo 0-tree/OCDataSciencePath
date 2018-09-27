@@ -10,6 +10,7 @@ Helper functions or Project 6
 #%%
 
 
+import numpy as np
 from bs4 import BeautifulSoup # conda install beautifulsoup4
 import nltk
 #nltk.download('punkt')
@@ -126,6 +127,17 @@ def isValidData(x,y,V_body):
     
     isValid = list(isValidBody & isValidTitle & isValidTag)
     return isValid
+
+
+#%%
+    
+def avg_jacard(y_true,y_pred):
+    '''
+    see https://en.wikipedia.org/wiki/Multi-label_classification#Statistics_and_evaluation_metrics
+    '''
+    jacard = np.minimum(y_true,y_pred).sum(axis=1) / np.maximum(y_true,y_pred).sum(axis=1)
+    
+    return jacard.mean()
 
 
 #%% END
