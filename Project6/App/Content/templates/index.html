@@ -3,43 +3,38 @@
 
   <head>
   <meta charset="utf-8" />
-  <title>Title text</title>
+  <title>Automatic Question Tagger</title>
   </head>
   
    <body>
     <!-- comment --> 
           
     <p>
-      Welcome to the flight delay predictor - V1. <br />
-      Fill in the following form to get your prediction:
+      Welcome to the Automatic Question Tagger - V1. <br />
+      Write your question and ask for tag recommendations (only supports English by now):
     </p>      
           
 
     <form method="post" action="{{ url_for('result') }}">
     
     <fieldset>
-       <legend>Your flight</legend> <!-- Titre du fieldset --> 
+       <legend>Your question</legend> <!-- Titre du fieldset --> 
 
-       <label for="date">Date of your flight:</label>
-       <input type="date" name="date" id="date" required/>
-       
-       <p>
-       <label for="airline">Your airline:</label><br />
-       <select name="airline" id="airline">
-           <option value="0">Select an airline</option>
-           <option value="AF">Air France</option>
-           <option value="AA">American Airlines</option>
-           <option value="QA">Qatar Airways</option>
-       </select>
-       </p>
-       
-       
-       <label for="depCity">Your departure city:</label>
-       <input type="text" name="depCity" id="depCity" required/>
-       
+       <label for="title">Title:</label>
+       <br />
+       <!-- <input type="text" name="title" id="title" style="width: 500px; height: 10px" onkeypress="if (event.keyCode == 13) {event.preventDefault();<br />;}" required/> -->
+       <input type="text" name="title" id="title" style="width: 500px; height: 10px" onkeypress="if (event.keyCode == 13) {event.preventDefault();<br />;}" required/>
+       <br />
+
+       <br />
+       <label for="title">Body:</label>
+       <br />
+       <!-- <input type="text" name="body" id="body" style="width: 500px; height: 200px" onkeypress="if (event.keyCode == 13) {event.preventDefault();<br />;}" required/> -->
+       <input type="text" name="body" id="body" style="width: 500px; height: 200px" onkeypress="if (event.keyCode == 13) {event.preventDefault();<br />;}" required/>
+
        <br />
        <br />
-       <input type="submit" value="Predict" />
+       <input type="submit" value="Recommend tags" />
 
    </fieldset>
    </form>

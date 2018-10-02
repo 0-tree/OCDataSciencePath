@@ -3,20 +3,24 @@
 
   <head>
   <meta charset="utf-8" />
-  <title>Title text</title>
+  <title>Automatic Question Tagger</title>
   </head>
   
    <body>
     <!-- comment -->
           
     <p>
-      Here is your prediction: {{ prediction }} <br />
+      We recommend tags: {{ prediction }} <br />
     </p>      
   
     <p>
       Thanks for using our service. <br />
-    </p>   
-    
+    </p>  
+
+    <p>
+      <a href="{{ url_for('index') }}">(back)</a>
+    </p>
+
   </body>
   
 </html>

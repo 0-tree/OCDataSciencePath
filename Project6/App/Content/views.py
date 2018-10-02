@@ -1,5 +1,5 @@
-from flask import Flask, render_template, url_for, request
-from .Intelligence.models import dummyPrediction
+from flask import Flask, render_template, request
+from .Intelligence.models import prediction_1
 
 app = Flask(__name__)
 
@@ -19,9 +19,8 @@ def index():
 # use form with Flask: https://stackoverflow.com/questions/11556958/sending-data-from-html-form-to-a-python-script-in-flask
 @app.route('/result', methods=['POST'])
 def result():
-    date = request.form['date']
-    airline = request.form['airline']
-    depCity = request.form['depCity']
+    title = request.form['title']
+    body = request.form['body']
 
-    prediction = dummyPrediction(date,airline,depCity)
-    return render_template('result.html',prediction= prediction)
+    prediction = prediction_1(title,body)
+    return render_template('result.html',prediction=prediction)
