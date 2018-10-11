@@ -3,14 +3,12 @@ import os
 import numpy as np
 import pickle
 from Content.Pkg.helper import basicHTMLTextCleaner # calls from run.py
-print('yo')
 
 #%%
 
 def prediction_1(title,body):
     
     pathToIntellDir = os.path.split(os.path.realpath(__file__))[0] # works if material is in same directory than this file
-    print(pathToIntellDir)
     
     # load needed material
     tokenizer = pickle.load(open(os.path.join(pathToIntellDir,'tokenizer.pkl'),'rb'))
@@ -24,7 +22,6 @@ def prediction_1(title,body):
     
     model = pickle.load(open(os.path.join(pathToIntellDir,'model.pkl'),'rb'))
     count_tag = pickle.load(open(os.path.join(pathToIntellDir,'count_tag.pkl'),'rb'))
-    print(count_tag)
     
     # data processing
     # clean text
@@ -38,7 +35,6 @@ def prediction_1(title,body):
     body_i = tfidf_body.transform(body_f)
     # get X
     x = np.hstack((body_i.toarray(),title_i.toarray())) # SEE HOW TO AVOID .toarray()...
-    print(x)
 
     if 0 == title_i.sum():
         return 'No keyword found in the title: please be more precise.'
