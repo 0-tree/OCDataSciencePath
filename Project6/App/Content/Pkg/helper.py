@@ -14,7 +14,36 @@ import numpy as np
 from bs4 import BeautifulSoup # conda install beautifulsoup4
 import nltk
 #nltk.download('punkt')
+import matplotlib.pyplot as plt
 
+
+#%% visualisation
+# ---------------
+
+def plotCV(cvmodel,alpha=3):
+	'''
+	basic plot of the mean and confidence intervals scores from the tests in CV.
+
+	Inputs
+	------
+	cvmodel : sklearn.model_selection._search.GridSearchCV or equivalent
+		fitted CV model, must contain a .cv_results_ attribute
+	alpha : float or int, default 3
+		number of stds to represent the confidence intervals.
+	'''
+	f = plt.figure(figsize=(20,5))
+	f.add_subplot(111)
+	mean = cvmodel.cv_results_['mean_test_score']
+	std = cvmodel.cv_results_['std_test_score']
+	plt.scatter(np.arange(len(mean)),mean,s=None,c='k',marker='o')
+	plt.scatter(np.arange(len(mean)),mean+alpha*std,s=None,c='r',marker='^')
+	plt.scatter(np.arange(len(mean)),mean-alpha*std,s=None,c='r',marker='v')
+	plt.show()
+
+
+
+#%% text cleaning
+# ---------------
 
 #%%
 
@@ -89,6 +118,53 @@ def basicTagTextCleaner(tagText,outputType='str'):
     return text
 
 
+
+#%% losses and scores
+# -------------------
+
+#%%
+    
+def avg_jacard(y_true,y_pred):
+    '''
+    see https://en.wikipedia.org/wiki/Multi-label_classification#Statistics_and_evaluation_metrics
+    '''
+    jacard = np.minimum(y_true,y_pred).sum(axis=1) / np.maximum(y_true,y_pred).sum(axis=1)
+    
+    return jacard.mean()
+
+#%%
+
+def hamming_score(y_true, y_pred, normalize=True, sample_weight=None):
+    '''
+    Compute the Hamming score (a.k.a. label-based accuracy) for the multi-label case
+    http://stackoverflow.com/q/32239577/395857
+    
+    Note
+    ----
+    It is the same as avg_jacard() :)
+    '''
+    acc_list = []
+    for i in range(y_true.shape[0]):
+        set_true = set( np.where(y_true[i])[0] )
+        set_pred = set( np.where(y_pred[i])[0] )
+        #print('\nset_true: {0}'.format(set_true))
+        #print('set_pred: {0}'.format(set_pred))
+        tmp_a = None
+        if len(set_true) == 0 and len(set_pred) == 0:
+            tmp_a = 1
+        else:
+            tmp_a = len(set_true.intersection(set_pred))/\
+                    float( len(set_true.union(set_pred)) )
+        #print('tmp_a: {0}'.format(tmp_a))
+        acc_list.append(tmp_a)
+    return np.mean(acc_list)
+
+
+
+
+#%% one-shot utilities
+# --------------------
+
 #%%
     
 def isValidData(x,y,V_body):
@@ -128,16 +204,6 @@ def isValidData(x,y,V_body):
     isValid = list(isValidBody & isValidTitle & isValidTag)
     return isValid
 
-
-#%%
-    
-def avg_jacard(y_true,y_pred):
-    '''
-    see https://en.wikipedia.org/wiki/Multi-label_classification#Statistics_and_evaluation_metrics
-    '''
-    jacard = np.minimum(y_true,y_pred).sum(axis=1) / np.maximum(y_true,y_pred).sum(axis=1)
-    
-    return jacard.mean()
 
 
 #%% END
