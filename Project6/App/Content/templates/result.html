@@ -7,18 +7,48 @@
   </head>
   
    <body>
-    <!-- comment -->
           
+    {% if [] == prediction %} <!-- example of conditional statement -->
+      <p>
+        Sorry we couldn't recommend tags. <br />
+      </p>    
+    {% else %}
+      <p>
+        We recommend tags: {{ prediction }} <br />
+      </p>    
+    {% endif %}
+
+
+
+    {% if 1 == qualityFlag %} <!-- example of conditional statement -->
     <p>
-      We recommend tags: {{ prediction }} <br />
-    </p>      
+      Note: quality may be improved by elaborating on the body. <br />
+    </p> 
+
+    {% elif 2 == qualityFlag %}
+    <p>
+      Note: quality may be improved by elaborating on the title. <br />
+    </p> 
+
+    {% elif 3 == qualityFlag %}
+    <p>
+      Note: quality may be improved by elaborating on both the body and the title. <br />
+    </p> 
+
+    {% endif %}
+
+
+    
   
     <p>
-      Thanks for using our service. <br />
+      <br />
+      Thanks for using our service.
+      <br />
     </p>  
 
     <p>
-      <a href="{{ url_for('index') }}">(back)</a>
+      <a href="javascript:history.back()" title="">(improve current question)</a> <br />
+      <a href="{{ url_for('index') }}" title="">(ask new question)</a> 
     </p>
 
   </body>

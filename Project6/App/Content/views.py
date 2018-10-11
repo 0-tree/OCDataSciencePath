@@ -22,5 +22,5 @@ def result():
     title = request.form['title']
     body = request.form['body']
 
-    prediction = prediction_1(title,body)
-    return render_template('result.html',prediction=prediction)
+    prediction,qualityFlag = prediction_1(title,body)
+    return render_template('result.html',prediction=prediction,qualityFlag=qualityFlag)
