@@ -1,13 +1,20 @@
 from flask import Flask, render_template, request
 from .Intelligence.models import prediction_1
 
-app = Flask(__name__)
+import os
+
+
+app = Flask(__name__, template_folder='Templates')
+#-> specify template_folder because for some reason
+# it does not work on PythonAnywhere (but it works on local).
+# see [here](https://stackoverflow.com/questions/23846927/flask-unable-to-find-templates#23847116)
+# for real usecase, but in this script it is really dummy
+# as I assume template_folder='Templates' is the default...
+
 
 # Config options - Make sure you created a 'config.py' file.
 app.config.from_object('config')
 # To get one variable, use app.config['MY_VARIABLE']
-
-
 
 
 @app.route('/')
@@ -23,4 +30,4 @@ def result():
     body = request.form['body']
 
     prediction,qualityFlag = prediction_1(title,body)
-    return render_template('result.html',prediction=prediction,qualityFlag=qualityFlag)
+    return render_template('result.html', prediction=prediction, qualityFlag=qualityFlag)
