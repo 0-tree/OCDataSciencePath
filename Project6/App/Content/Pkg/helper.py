@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 
-Helper functions or Project 6
+Helper functions for Project 6
 
 
 """

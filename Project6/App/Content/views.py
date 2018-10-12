@@ -4,6 +4,7 @@ from .Intelligence.models import prediction_1
 import os
 
 
+# app = Flask(__name__)
 app = Flask(__name__, template_folder='Templates')
 #-> specify template_folder because for some reason
 # it does not work on PythonAnywhere (but it works on local).
